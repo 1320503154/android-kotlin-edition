@@ -23,7 +23,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.code07.ui.theme.Code07Theme
 import com.example.code07.DB.*
 import androidx.compose.runtime.livedata.observeAsState
-
+// 主界面的创建
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,19 +34,22 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
+// 主屏幕的Composable函数
 @Composable
 fun MainScreen (){
+    // 获取当前的Context和ViewModel
     val context =   LocalContext.current
     val newViewModel = NewViewModel(NewRepository(context))
+    // 观察ViewModel中的数据变化
     val newsList by newViewModel.getNewsList().observeAsState()
-
+    // 在LaunchedEffect中进行数据的初始化和获取
     LaunchedEffect(Unit) {
         newViewModel.delData()
+        // 从资源文件中获取数据
         val imageStrings: Array<String>  = context.resources.getStringArray(R.array.images)
         val titlesArray: Array<String> = context.resources.getStringArray(R.array.titles)
         val authorsArray:Array<String> =context.resources.getStringArray(R.array.authors)
-
+        // 将获取的数据插入到数据库中
         for (i in titlesArray.indices) {
             val new = New()
             new.titles = titlesArray[i]
@@ -57,12 +60,12 @@ fun MainScreen (){
         }
         newViewModel.getAll()
     }
-
+    // 显示新闻列表
     newsList?.let { NewsList(news = it) }
 
 }
 
-
+// 新闻列表的Composable函数
 @Composable
 fun NewsList(news: List<New>) {
     LazyColumn {
@@ -72,6 +75,7 @@ fun NewsList(news: List<New>) {
     }
 }
 
+// 新闻行的Composable函数
 @Composable
 fun NewRow(new: New) {
     Column(

@@ -2,7 +2,7 @@ package com.example.code07.DB
 
 import android.content.Context
 import androidx.annotation.WorkerThread
-
+// 创建一个新的Repository，用于操作数据库
 class NewRepository(context: Context) {
     private var newDao: NewDao? = null
     init {
@@ -13,13 +13,13 @@ class NewRepository(context: Context) {
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
     suspend fun insertNew(new : New) {
-        newDao?.insertNew(new)
+        newDao?.insertNew(new)// 插入一条新的数据
 
     }
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
     suspend fun getAllNew(): List<New>?{
-        return newDao?.getAll()
+        return newDao?.getAll()// 获取所有的数据
     }
 }
 
