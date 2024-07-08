@@ -6,9 +6,8 @@ import androidx.room.Query
 
 @Dao
 interface NewDao {
+    @Query("select * from New")
+    fun getAll():List<New>
     @Insert
-    suspend fun insertNew(new: New)
-
-    @Query("SELECT * FROM news")
-    suspend fun getAllNew(): List<New>?
+    fun insertNew(newItem: New)
 }

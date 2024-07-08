@@ -7,26 +7,22 @@ import android.content.Context
 
 @Database(entities = [New::class], version = 1, exportSchema = false)
 abstract class MyDatabase : RoomDatabase() {
-    abstract fun newDao(): NewDao
-
-    companion object {
-        @Volatile
-        private var INSTANCE: MyDatabase? = null
-
-        fun getDB(context: Context): MyDatabase {
-            return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    MyDatabase::class.java,
-                    "my_database"
-                ).build()
-                INSTANCE = instance
-                instance
-            }
+    abstract fun getNewDao(): NewDao
+    companion object{
+        private var db:MyDatabase?=null
+        private val name="myapp"
+        fun getDB(context: Context)=if (db==null){
+            Room.databaseBuilder(context,MyDatabase::class.java,name).enableMultiInstanceInvalidation()
+                .build().apply {
+                    db=this
+                }
+        } else {
+            db!!
         }
-
         fun clearData() {
-            INSTANCE?.clearAllTables()
+            db?.clearAllTables()
         }
     }
+
 }
+

@@ -36,32 +36,32 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainScreen() {
-    val context = LocalContext.current
-    val newViewModel: NewViewModel = viewModel(
-        factory = NewViewModelFactory(NewRepository(context))
-    )
-    val newsList by newViewModel.getNewsList().observeAsState(initial = emptyList())
+fun MainScreen (){
+    val context =   LocalContext.current
+    val newViewModel = NewViewModel(NewRepository(context))
+    val newsList by newViewModel.getNewsList().observeAsState()
 
     LaunchedEffect(Unit) {
         newViewModel.delData()
-        val imageStrings: Array<String> = context.resources.getStringArray(R.array.images)
+        val imageStrings: Array<String>  = context.resources.getStringArray(R.array.images)
         val titlesArray: Array<String> = context.resources.getStringArray(R.array.titles)
-        val authorsArray: Array<String> = context.resources.getStringArray(R.array.authors)
+        val authorsArray:Array<String> =context.resources.getStringArray(R.array.authors)
 
         for (i in titlesArray.indices) {
             val new = New()
             new.titles = titlesArray[i]
             new.authors = authorsArray[i]
             val resourceName = imageStrings[i].substringAfterLast("/").substringBeforeLast(".")
-            new.image = context.resources.getIdentifier(resourceName, "drawable", context.packageName)
+            new.image=context.resources.getIdentifier(resourceName, "drawable", context.packageName)
             newViewModel.insert(new)
         }
         newViewModel.getAll()
     }
 
-    NewsList(news = newsList)
+    newsList?.let { NewsList(news = it) }
+
 }
+
 
 @Composable
 fun NewsList(news: List<New>) {
