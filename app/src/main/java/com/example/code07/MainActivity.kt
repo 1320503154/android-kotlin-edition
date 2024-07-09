@@ -7,6 +7,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
@@ -34,11 +35,12 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 // 主屏幕的Composable函数
 @Composable
-fun MainScreen (){
+fun MainScreen() {
     // 获取当前的Context和ViewModel
-    val context =   LocalContext.current
+    val context = LocalContext.current
     val newViewModel = NewViewModel(NewRepository(context))
     // 观察ViewModel中的数据变化
     val newsList by newViewModel.getNewsList().observeAsState()
@@ -46,23 +48,25 @@ fun MainScreen (){
     LaunchedEffect(Unit) {
         newViewModel.delData()
         // 从资源文件中获取数据
-        val imageStrings: Array<String>  = context.resources.getStringArray(R.array.images)
+        val imageStrings: Array<String> = context.resources.getStringArray(R.array.images)
         val titlesArray: Array<String> = context.resources.getStringArray(R.array.titles)
-        val authorsArray:Array<String> =context.resources.getStringArray(R.array.authors)
+        val authorsArray: Array<String> = context.resources.getStringArray(R.array.authors)
         // 将获取的数据插入到数据库中
         for (i in titlesArray.indices) {
             val new = New()
             new.titles = titlesArray[i]
             new.authors = authorsArray[i]
             val resourceName = imageStrings[i].substringAfterLast("/").substringBeforeLast(".")
-            new.image=context.resources.getIdentifier(resourceName, "drawable", context.packageName)
+            new.image = context.resources.getIdentifier(resourceName, "drawable", context.packageName)
             newViewModel.insert(new)
         }
         newViewModel.getAll()
     }
-    // 显示新闻列表
-    newsList?.let { NewsList(news = it) }
 
+    Column {
+        InsertButton(newViewModel)
+        newsList?.let { NewsList(news = it) }
+    }
 }
 
 // 新闻列表的Composable函数
@@ -113,5 +117,27 @@ fun NewRow(new: New) {
                 modifier = Modifier.padding(2.dp)
             )
         }
+    }
+}
+
+// 插入按钮的Composable函数
+@Composable
+fun InsertButton(newViewModel: NewViewModel) {
+    Button(
+        onClick = {
+            // 插入一条新的新闻数据
+            val newItem = New()
+            newItem.titles = "新插入的新闻标题"
+            newItem.authors = "新插入的新闻作者"
+            newItem.image = R.drawable.image1 // 替换为实际的drawable资源
+            newViewModel.insert(newItem)
+            // 插入数据后获取所有数据并刷新列表
+            newViewModel.getAll()
+        },
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth()
+    ) {
+        Text(text = "插入新新闻")
     }
 }
