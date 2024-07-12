@@ -35,6 +35,7 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onStop() {
+        //这个 Context 对象包含了关于 MainActivity 的环境信息。 通过这个 Context 对象，我们可以访问 Activity 的资源和类，以及调用 Activity 的方法。
         playerViewModel.unbindToMusicService(baseContext)
         super.onStop()
     }

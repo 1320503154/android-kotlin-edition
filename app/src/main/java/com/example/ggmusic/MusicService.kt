@@ -22,24 +22,24 @@ import androidx.core.app.NotificationCompat
 import com.example.ggmusic.Player.Player
 
 class MusicService : Service() {
-    private var player: Player? by mutableStateOf(null)
-    private val mBinder: IBinder = MusicServiceBinder()
+    private var player: Player? by mutableStateOf(null)//播放器实例
+    private val mBinder: IBinder = MusicServiceBinder()//Binder对象,可以在Activity中获取Service实例
     inner class MusicServiceBinder : Binder() {
         val service: MusicService
             get() = this@MusicService
     }
 
-    @RequiresApi(Build.VERSION_CODES.R)
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+    @RequiresApi(Build.VERSION_CODES.R)//Android 11及以上版本
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {//服务启动时调用
 
-        val title = intent?.getStringExtra(MainActivity.TITLE)
-        val artist = intent?.getStringExtra(MainActivity.ARTIST)
-        val channelId = "my_channel_01"
-        val context = baseContext
-        val notificationIntent = Intent(context, MainActivity::class.java)
-        notificationIntent.flags =
+        val title = intent?.getStringExtra(MainActivity.TITLE)//获取音乐标题
+        val artist = intent?.getStringExtra(MainActivity.ARTIST)//获取音乐作者
+        val channelId = "channel_myself_01"//通知渠道ID
+        val context = baseContext//获取环境上下文
+        val notificationIntent = Intent(context, MainActivity::class.java)//通知点击后跳转的Activity
+        notificationIntent.flags =//设置Intent的标志
             Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP // 确保正确启动并清除栈顶任务
-        val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {//Android 12及以上版本
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         } else {
             PendingIntent.FLAG_UPDATE_CURRENT
@@ -54,9 +54,9 @@ class MusicService : Service() {
             )
 
         // 创建通知渠道（对于Android Oreo及以上版本）
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "My Channel"
-            val descriptionText = "This is my app's notification channel"
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {//Android 8.0及以上版本
+            val name = "My App's Notification Channel"
+            val descriptionText = "Music Player Notifications"
             val importance = NotificationManager.IMPORTANCE_DEFAULT
             val channel = NotificationChannel(channelId, name, importance).apply {
                 description = descriptionText
@@ -69,7 +69,7 @@ class MusicService : Service() {
         }
 
 
-        val notificationId = 12434 // 任意唯一的ID用于标识这个通知
+        val notificationId = 1234 // 任意唯一的ID用于标识这个通知
         val notification = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.baseline_album_24) // 设置通知小图标
             .setContentTitle(title)
@@ -80,7 +80,7 @@ class MusicService : Service() {
             .build()
 
         try {
-            player?.play(intent?.getStringExtra(MainActivity.URL)!!)
+            player?.play(intent?.getStringExtra(MainActivity.URL)!!)//播放音乐
             startForeground(notificationId, notification, FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK)
 
         } catch (e: Exception) {

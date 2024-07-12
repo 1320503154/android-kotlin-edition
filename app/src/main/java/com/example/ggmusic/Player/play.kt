@@ -24,27 +24,28 @@ class Player {
     fun play(url: String) {
         if (url != "") {
             if (currentUrl == url) {
-                resume()
+                resume()//如果当前播放的音乐和要播放的音乐是同一首，那么直接调用 resume 方法,恢复播放
                 return
             }
             stop()
             currentUrl = url
             mediaPlayer = MediaPlayer().apply {
-                setAudioAttributes(
+                setAudioAttributes(//设置音频属性
                         AudioAttributes.Builder()
                                 .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                                .build()
+                                .build()//设置音频类型为音乐
                 )
-                setDataSource(url)
-                prepareAsync()
+                setDataSource(url)//设置数据源
+                prepareAsync()//异步准备
                 setOnPreparedListener { mp ->
-                        mp.start()
-                    this@Player.isPlaying = true
+                        mp.start()//准备好后开始播放
+                    this@Player.isPlaying = true//设置播放状态为 true
                     // 在播放前检查是否已准备好并处于播放状态
                     if (mp.isPlaying) {
                         if (mediaPlayer?.isPlaying == true) {
                             val handler = Handler(Looper.getMainLooper())
                             handler.postDelayed(object : Runnable {
+                                //总体实现思路是通过 Handler 定时获取当前播放位置并更新进度(每秒更新一次)
                                 override fun run() {
                                     // 在播放前检查是否已准备好并处于播放状态
                                     if (mediaPlayer != null && mediaPlayer!!.isPlaying) {

@@ -1,9 +1,8 @@
 package com.example.ggmusic.Audio
 
+import AudioItem
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
 import android.content.Intent
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -40,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ggmusic.MainActivity
@@ -66,8 +66,8 @@ fun AudioList(audioFiles: List<AudioFile>,viewModel: PlayerViewModel) {
                     .fillMaxWidth()
                     .height(50.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color(0, 133, 119),
-                    contentColor = Color(0, 133, 119)
+                    containerColor = Color(128, 0, 128),  // 紫色
+                    contentColor = Color(128, 0, 128)     // 紫色
                 ),
                 shape = MaterialTheme.shapes.small.copy(CornerSize(0))
             ) {
@@ -77,7 +77,7 @@ fun AudioList(audioFiles: List<AudioFile>,viewModel: PlayerViewModel) {
                         .fillMaxHeight()
                         .padding(horizontal = 20.dp)
                 ) {
-                    Text(text = "GGMusic", fontSize = 28.sp, color = Color.White)
+                    Text(text = "GG音乐播放器", fontSize = 28.sp, color = Color.White)
                 }
             }
         },
@@ -87,7 +87,7 @@ fun AudioList(audioFiles: List<AudioFile>,viewModel: PlayerViewModel) {
                 modifier = Modifier
                     .background(Color.White)
                     .fillMaxWidth()
-                    .height(80.dp)
+                    .height(120.dp)
                     .padding(10.dp),
             ) {
                 Column {
@@ -102,9 +102,9 @@ fun AudioList(audioFiles: List<AudioFile>,viewModel: PlayerViewModel) {
                         )
                     }
                     Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
+                        verticalAlignment = Alignment.CenterVertically,//垂直居中
+                        horizontalArrangement = Arrangement.SpaceBetween,//水平间距
+                        modifier = Modifier.fillMaxWidth()//填充父布局
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -168,7 +168,6 @@ fun AudioList(audioFiles: List<AudioFile>,viewModel: PlayerViewModel) {
                         indication = rememberRipple(bounded = true),
                         onClick = {
                             currentMusic = audio
-                            // player.play(currentMusic.filePath)
                             val serviceIntent = Intent(context, MusicService::class.java)
                             serviceIntent.putExtra(MainActivity.URL, currentMusic.filePath)
                             serviceIntent.putExtra(MainActivity.TITLE, currentMusic.title)
@@ -180,4 +179,17 @@ fun AudioList(audioFiles: List<AudioFile>,viewModel: PlayerViewModel) {
             }
         }
     }
+}
+@Preview(showBackground = true)
+@Composable
+fun AudioListPreview() {
+    val audioFiles = listOf(
+        AudioFile(1, "Artist 1", "path/to/file1"),
+        AudioFile(2, "Artist 2", "path/to/file2"),
+        AudioFile(3, "Artist 3", "path/to/file3")
+    )
+
+    val viewModel = PlayerViewModel()
+
+    AudioList(audioFiles = audioFiles, viewModel = viewModel)
 }
