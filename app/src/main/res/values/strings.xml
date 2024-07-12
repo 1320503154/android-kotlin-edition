@@ -1,3 +1,7 @@
 <resources>
+<<<<<<< HEAD
     <string name="app_name">GGNews</string>
+=======
+    <string name="app_name">Code07</string>
+>>>>>>> 881e484330747cd61d51f7b520c3b745f75deed8
 </resources>

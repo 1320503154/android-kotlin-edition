@@ -19,6 +19,10 @@ dependencyResolutionManagement {
     }
 }
 
+<<<<<<< HEAD
 rootProject.name = "GGNews"
+=======
+rootProject.name = "Code07"
+>>>>>>> 881e484330747cd61d51f7b520c3b745f75deed8
 include(":app")
  

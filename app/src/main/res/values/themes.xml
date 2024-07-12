@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+<<<<<<< HEAD
     <style name="Theme.GGNews" parent="android:Theme.Material.Light.NoActionBar" />
+=======
+    <style name="Theme.Code07" parent="android:Theme.Material.Light.NoActionBar" />
+>>>>>>> 881e484330747cd61d51f7b520c3b745f75deed8
 </resources>

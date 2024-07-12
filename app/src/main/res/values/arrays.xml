@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="titles">
+        <item>探索宇宙的奥秘</item>
+        <item>人工智能的未来</item>
+        <item>深海生物的奇妙世界</item>
+        <item>古代文明的智慧</item>
+        <item>气候变化与我们的责任</item>
+        <item>气候变化与我们的责任</item>
+        <item>气候变化与我们的责任</item>
+        <item>气候变化与我们的责任</item>
+
+    </string-array>
+    <string-array name="authors">
+        <item>星空观察者</item>
+        <item>科技未来学家</item>
+        <item>海洋生物学家</item>
+        <item>考古学专家</item>
+        <item>环境保护activist</item>
+        <item>环境保护activist</item>
+        <item>环境保护activist</item>
+        <item>环境保护activist</item>
+
+    </string-array>
+    <string-array name="images">
+        <item>@drawable/image1</item>
+        <item>@drawable/image1</item>
+        <item>@drawable/image1</item>
+        <item>@drawable/image1</item>
+        <item>@drawable/image1</item>
+        <item>@drawable/image1</item>
+        <item>@drawable/image1</item>
+        <item>@drawable/image1</item>
+    </string-array>
+</resources>
